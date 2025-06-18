@@ -1,26 +1,49 @@
 
+import { useState, useEffect } from 'react';
 import { SiteCard } from "./SiteCard";
-import { sitesData } from "@/data/sites";
 
 interface SiteGridProps {
   searchQuery:string;
 }
 
 export function SiteGrid({ searchQuery }: SiteGridProps) {
-  const filteredSites = sitesData.filter((site) => {
-    const matchesSearch = site.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         site.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    return matchesSearch;
-  });
+  interface Site {
+    id: string | number;
+    category: string;
+    // add other properties as needed
+    [key: string]: any;
+  }
 
-  const groupedSites = filteredSites.reduce((acc, site) => {
+  const [sites, setSites] = useState<Site[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchSites() {
+      try {
+        const response = await fetch(`http://localhost:3001/api/sites?search=${encodeURIComponent(searchQuery)}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setSites(data);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchSites();
+  }, [searchQuery]);
+
+  const groupedSites = sites.reduce((acc, site) => {
     if (!acc[site.category]) {
       acc[site.category] = [];
     }
     acc[site.category].push(site);
     return acc;
-  }, {} as Record<string, typeof sitesData>);
+  }, {} as Record<string, any[]>);
 
   const categoryNames: Record<string, string> = {
     development: "开发工具",
@@ -34,7 +57,7 @@ export function SiteGrid({ searchQuery }: SiteGridProps) {
     social: "社交媒体",
   };
 
-  if (filteredSites.length === 0) {
+  if (!loading && sites.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500 text-lg">没有找到相关网站</p>
