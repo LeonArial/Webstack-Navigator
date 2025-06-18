@@ -10,7 +10,6 @@ interface Site {
   description: string;
   url: string;
   category: string;
-  icon?: string;
   tags: string[];
   rating: number;
 }
@@ -29,20 +28,14 @@ export function SiteCard({ site }: SiteCardProps) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            {site.icon ? (
-              <img 
-                src={site.icon} 
-                alt={site.name}
-                className="w-8 h-8 rounded"
-                onError={(e) => {
-                  e.currentTarget.src = '/favicon.ico';
-                }}
-              />
-            ) : (
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center text-white font-bold text-sm">
-                {site.name.charAt(0).toUpperCase()}
-              </div>
-            )}
+            <img 
+              src={`https://www.google.com/s2/favicons?sz=64&domain_url=${site.url}`}
+              alt={site.name}
+              className="w-8 h-8 rounded"
+              onError={(e) => {
+                e.currentTarget.src = '/favicon.ico';
+              }}
+            />
             <div className="flex-1">
               <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
                 {site.name}
