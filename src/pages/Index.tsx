@@ -5,10 +5,13 @@ import { SiteGrid } from "@/components/SiteGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarInset } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleCategorySelect = (category: string) => {
     if (category === 'all') {
@@ -21,11 +24,15 @@ const Index = () => {
     }
   };
 
+  const handleAdminClick = () => {
+    navigate('/admin');
+  };
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <AppSidebar 
-          selectedCategory="all" // This prop is no longer used for filtering but kept for consistency
+          selectedCategory="all"
           onCategorySelect={handleCategorySelect}
         />
         <SidebarInset>
@@ -37,6 +44,15 @@ const Index = () => {
                 onSearchChange={setSearchQuery}
               />
             </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleAdminClick}
+              className="flex items-center gap-2"
+            >
+              <Settings className="w-4 h-4" />
+              后台管理
+            </Button>
           </header>
           <main className="flex-1 p-6">
             <div className="max-w-7xl mx-auto">
