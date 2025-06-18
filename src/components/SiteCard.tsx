@@ -35,7 +35,7 @@ export function SiteCard({ site }: SiteCardProps) {
                 alt={site.name}
                 className="w-8 h-8 rounded"
                 onError={(e) => {
-                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.src = '/favicon.ico';
                 }}
               />
             ) : (
