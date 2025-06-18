@@ -60,14 +60,14 @@ const categories = [
     icon: Shield,
   },
   {
-    id: "entertainment",
-    title: "娱乐游戏",
-    icon: Gamepad2,
-  },
-  {
     id: "education",
     title: "学习教育",
     icon: BookOpen,
+  },
+  {
+    id: "entertainment",
+    title: "娱乐游戏",
+    icon: Gamepad2,
   },
   {
     id: "business",
