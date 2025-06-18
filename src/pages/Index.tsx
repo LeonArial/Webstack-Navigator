@@ -7,15 +7,26 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarInset } from "@/components/ui/sidebar";
 
 const Index = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleCategorySelect = (category: string) => {
+    if (category === 'all') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const element = document.getElementById(category);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
 
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <AppSidebar 
-          selectedCategory={selectedCategory}
-          onCategorySelect={setSelectedCategory}
+          selectedCategory="all" // This prop is no longer used for filtering but kept for consistency
+          onCategorySelect={handleCategorySelect}
         />
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
@@ -38,7 +49,6 @@ const Index = () => {
                 </p>
               </div>
               <SiteGrid 
-                selectedCategory={selectedCategory}
                 searchQuery={searchQuery}
               />
             </div>

@@ -96,7 +96,6 @@ export function AppSidebar({ selectedCategory, onCategorySelect }: AppSidebarPro
               {categories.map((category) => (
                 <SidebarMenuItem key={category.id}>
                   <SidebarMenuButton 
-                    isActive={selectedCategory === category.id}
                     onClick={() => onCategorySelect(category.id)}
                   >
                     <category.icon className="h-4 w-4" />

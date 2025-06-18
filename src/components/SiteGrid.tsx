@@ -3,17 +3,15 @@ import { SiteCard } from "./SiteCard";
 import { sitesData } from "@/data/sites";
 
 interface SiteGridProps {
-  selectedCategory: string;
-  searchQuery: string;
+  searchQuery:string;
 }
 
-export function SiteGrid({ selectedCategory, searchQuery }: SiteGridProps) {
+export function SiteGrid({ searchQuery }: SiteGridProps) {
   const filteredSites = sitesData.filter((site) => {
-    const matchesCategory = selectedCategory === "all" || site.category === selectedCategory;
     const matchesSearch = site.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          site.description.toLowerCase().includes(searchQuery.toLowerCase());
     
-    return matchesCategory && matchesSearch;
+    return matchesSearch;
   });
 
   const groupedSites = filteredSites.reduce((acc, site) => {
@@ -47,12 +45,10 @@ export function SiteGrid({ selectedCategory, searchQuery }: SiteGridProps) {
   return (
     <div className="space-y-8">
       {Object.entries(groupedSites).map(([category, sites]) => (
-        <div key={category}>
-          {selectedCategory === "all" && (
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              {categoryNames[category] || category}
-            </h2>
-          )}
+        <div key={category} id={category}>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            {categoryNames[category] || category}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {sites.map((site) => (
               <SiteCard key={site.id} site={site} />
