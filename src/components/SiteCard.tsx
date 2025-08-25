@@ -1,5 +1,6 @@
 
-import { ExternalLink, Star } from "lucide-react";
+import { useState } from "react";
+import { ExternalLink, Star, Globe } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,8 +20,23 @@ interface SiteCardProps {
 }
 
 export function SiteCard({ site }: SiteCardProps) {
+  const [faviconError, setFaviconError] = useState(false);
+  
   const handleVisit = () => {
     window.open(site.url, '_blank');
+  };
+
+  const getFaviconUrl = (url: string) => {
+    try {
+      const domain = new URL(url).origin;
+      return `${domain}/favicon.ico`;
+    } catch {
+      return null;
+    }
+  };
+
+  const handleFaviconError = () => {
+    setFaviconError(true);
   };
 
   return (
@@ -28,11 +44,18 @@ export function SiteCard({ site }: SiteCardProps) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <img 
-              src={`https://www.google.com/s2/favicons?sz=64&domain_url=${site.url}`}
-              alt={site.name}
-              className="w-8 h-8 rounded"
-            />
+            {!faviconError ? (
+              <img 
+                src={getFaviconUrl(site.url) || `https://www.google.com/s2/favicons?sz=64&domain_url=${site.url}`}
+                alt={site.name}
+                className="w-8 h-8 rounded"
+                onError={handleFaviconError}
+              />
+            ) : (
+              <div className="w-8 h-8 rounded bg-gray-100 flex items-center justify-center">
+                <Globe className="w-4 h-4 text-gray-400" />
+              </div>
+            )}
             <div className="flex-1">
               <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
                 {site.name}
