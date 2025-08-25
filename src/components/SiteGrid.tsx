@@ -23,15 +23,7 @@ export function SiteGrid({ searchQuery }: SiteGridProps) {
   }, {} as Record<string, typeof sitesData>);
 
   const categoryNames: Record<string, string> = {
-    development: "开发工具",
-    design: "设计创意",
-    database: "数据存储",
-    cloud: "云服务",
-    security: "网络安全",
-    entertainment: "娱乐游戏",
-    education: "学习教育",
-    business: "商业办公",
-    social: "社交媒体",
+    all: "所有",
   };
 
   if (filteredSites.length === 0) {

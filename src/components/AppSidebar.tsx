@@ -24,17 +24,16 @@ import {
 } from "@/components/ui/sidebar";
 
 interface AppSidebarProps {
-  selectedCategory: string;
   onCategorySelect: (category: string) => void;
 }
 
 const categories = [
   {
     id: "all",
-    title: "全部",
+    title: "主页",
     icon: Home,
-  },
-  {
+  }
+  /* {
     id: "development",
     title: "开发工具",
     icon: Code,
@@ -78,14 +77,14 @@ const categories = [
     id: "social",
     title: "社交媒体",
     icon: Users,
-  },
+  } */
 ];
 
-export function AppSidebar({ selectedCategory, onCategorySelect }: AppSidebarProps) {
+export function AppSidebar({ onCategorySelect }: AppSidebarProps) {
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
-        <h2 className="text-lg font-semibold text-gray-900">WebStack</h2>
+        <h2 className="text-lg font-semibold text-gray-900">运维中心</h2>
         <p className="text-sm text-gray-600">网站导航</p>
       </SidebarHeader>
       <SidebarContent>

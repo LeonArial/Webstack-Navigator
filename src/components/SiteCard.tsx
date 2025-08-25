@@ -32,9 +32,6 @@ export function SiteCard({ site }: SiteCardProps) {
               src={`https://www.google.com/s2/favicons?sz=64&domain_url=${site.url}`}
               alt={site.name}
               className="w-8 h-8 rounded"
-              onError={(e) => {
-                e.currentTarget.src = '/favicon.ico';
-              }}
             />
             <div className="flex-1">
               <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">

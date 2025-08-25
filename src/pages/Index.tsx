@@ -31,7 +31,6 @@ const Index = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <AppSidebar 
-          selectedCategory="all"
           onCategorySelect={handleCategorySelect}
         />
         <SidebarInset>
@@ -44,7 +43,7 @@ const Index = () => {
               />
             </div>
           </header>
-          <main className="flex-1 p-6">
+          <main className="flex-1 p-4">
             <div className="max-w-7xl mx-auto">
               <SiteGrid 
                 searchQuery={searchQuery}
