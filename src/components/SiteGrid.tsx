@@ -1,13 +1,54 @@
 
+import { useState, useEffect } from "react";
 import { SiteCard } from "./SiteCard";
-import { sitesData } from "@/data/sites";
+
+interface Site {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  category: string;
+  tags: string[];
+  rating: number;
+}
 
 interface SiteGridProps {
-  searchQuery:string;
+  searchQuery: string;
 }
 
 export function SiteGrid({ searchQuery }: SiteGridProps) {
-  const filteredSites = sitesData.filter((site) => {
+  const [sites, setSites] = useState<Site[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadSites = async () => {
+      try {
+        const response = await fetch('./sites.json');
+        if (response.ok) {
+          const data = await response.json();
+          setSites(data);
+        } else {
+          console.error('Failed to load sites.json');
+        }
+      } catch (error) {
+        console.error('Error loading sites:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSites();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500 text-lg">加载中...</p>
+      </div>
+    );
+  }
+
+  const filteredSites = sites.filter((site) => {
     const matchesSearch = site.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          site.description.toLowerCase().includes(searchQuery.toLowerCase());
     
@@ -20,7 +61,7 @@ export function SiteGrid({ searchQuery }: SiteGridProps) {
     }
     acc[site.category].push(site);
     return acc;
-  }, {} as Record<string, typeof sitesData>);
+  }, {} as Record<string, Site[]>);
 
   const categoryNames: Record<string, string> = {
     all: "所有",
