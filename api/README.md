@@ -44,7 +44,7 @@ cp .env.example .env
 MONGODB_URI=mongodb://localhost:27017
 DATABASE_NAME=webshine_navigator
 COLLECTION_NAME=sites
-PORT=8080
+PORT=5010
 ```
 
 ### 4. 初始化数据库
@@ -61,13 +61,13 @@ go run init_db.go
 go run main.go
 ```
 
-服务将在 `http://localhost:8080` 启动。
+服务将在 `http://localhost:5010` 启动。
 
 ## API 接口
 
 ### 基础信息
 
-- **Base URL**: `http://localhost:8080/api/v1`
+- **Base URL**: `http://localhost:5010/api/v1`
 - **Content-Type**: `application/json`
 
 ### 端点列表

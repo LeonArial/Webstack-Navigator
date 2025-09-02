@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { SiteCard } from "./SiteCard";
+import { CATEGORY_MAP, CATEGORIES } from "@/constants/categories";
 
 interface Site {
   id: string;
@@ -99,9 +100,6 @@ export function SiteGrid({ searchQuery }: SiteGridProps) {
     return acc;
   }, {} as Record<string, Site[]>);
 
-  const categoryNames: Record<string, string> = {
-    all: "所有",
-  };
 
   if (filteredSites.length === 0) {
     return (
@@ -113,18 +111,23 @@ export function SiteGrid({ searchQuery }: SiteGridProps) {
 
   return (
     <div className="space-y-8">
-      {Object.entries(groupedSites).map(([category, sites]) => (
-        <div key={category} id={category}>
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            {categoryNames[category] || category}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {sites.map((site) => (
-              <SiteCard key={site.id} site={site} />
-            ))}
+      {CATEGORIES.map((category) => {
+        const sites = groupedSites[category.id];
+        if (!sites || sites.length === 0) return null;
+        
+        return (
+          <div key={category.id} id={category.id}>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              {category.title}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {sites.map((site) => (
+                <SiteCard key={site.id} site={site} />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

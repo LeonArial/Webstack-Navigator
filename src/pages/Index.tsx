@@ -5,6 +5,9 @@ import { SiteGrid } from "@/components/SiteGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarInset } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -42,6 +45,11 @@ const Index = () => {
                 onSearchChange={setSearchQuery}
               />
             </div>
+            <Button asChild variant="ghost" size="sm" className="ml-2">
+              <Link to="/admin">
+                <Settings className="h-4 w-4" />
+              </Link>
+            </Button>
           </header>
           <main className="flex-1 p-4">
             <div className="max-w-7xl mx-auto">
