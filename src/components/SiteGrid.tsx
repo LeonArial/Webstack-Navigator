@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { SiteCard } from "./SiteCard";
 
@@ -19,26 +18,54 @@ interface SiteGridProps {
 export function SiteGrid({ searchQuery }: SiteGridProps) {
   const [sites, setSites] = useState<Site[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadSites = async () => {
       try {
-        const response = await fetch('./sites.json');
+        // 使用新的API接口
+        const apiUrl = searchQuery 
+          ? `http://localhost:5010/api/v1/sites?q=${encodeURIComponent(searchQuery)}`
+          : 'http://localhost:5010/api/v1/sites';
+          
+        const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();
           setSites(data);
         } else {
-          console.error('Failed to load sites.json');
+          console.error('Failed to load sites from API');
+          // 如果API失败，回退到静态JSON文件
+          const fallbackResponse = await fetch('./sites.json');
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            setSites(fallbackData);
+          } else {
+            setError('Failed to load sites from API and fallback');
+          }
         }
       } catch (error) {
         console.error('Error loading sites:', error);
+        setError('Error loading sites');
+        // 如果API失败，回退到静态JSON文件
+        try {
+          const fallbackResponse = await fetch('./sites.json');
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            setSites(fallbackData);
+          } else {
+            setError('Failed to load sites from API and fallback');
+          }
+        } catch (fallbackError) {
+          console.error('Fallback also failed:', fallbackError);
+          setError('Failed to load sites from API and fallback');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     loadSites();
-  }, []);
+  }, [searchQuery]);
 
   if (loading) {
     return (
@@ -48,7 +75,16 @@ export function SiteGrid({ searchQuery }: SiteGridProps) {
     );
   }
 
-  const filteredSites = sites.filter((site) => {
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-500 text-lg">{error}</p>
+      </div>
+    );
+  }
+
+  // 如果使用API搜索，直接使用返回的结果
+  const filteredSites = searchQuery ? sites : sites.filter((site) => {
     const matchesSearch = site.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          site.description.toLowerCase().includes(searchQuery.toLowerCase());
     
