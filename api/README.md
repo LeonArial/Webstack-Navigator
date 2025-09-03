@@ -34,11 +34,7 @@ go mod tidy
 
 ### 3. 配置环境变量
 
-复制环境变量模板：
-```bash
-cp .env.example .env
-```
-
+环境变量：
 编辑 `.env` 文件：
 ```env
 MONGODB_URI=mongodb://localhost:27017

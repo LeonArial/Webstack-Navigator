@@ -21,22 +21,43 @@ interface SiteCardProps {
 
 export function SiteCard({ site }: SiteCardProps) {
   const [faviconError, setFaviconError] = useState(false);
+  const [currentFaviconIndex, setCurrentFaviconIndex] = useState(0);
   
   const handleVisit = () => {
     window.open(site.url, '_blank');
   };
 
-  const getFaviconUrl = (url: string) => {
+  const getFaviconUrls = (url: string) => {
     try {
-      const domain = new URL(url).origin;
-      return `${domain}/favicon.ico`;
+      const urlObj = new URL(url);
+      const domain = urlObj.origin;
+      
+      // 多种favicon获取策略，按优先级排序
+      return [
+        // 1. 根目录favicon.ico
+        `${domain}/favicon.ico`,
+        // 2. 备用服务
+        `https://favicon.im/${url}`,
+        // `https://www.google.com/s2/favicons?sz=64&domain_url=${url}`,
+      ];
     } catch {
-      return null;
+      return [];
     }
   };
 
+  const faviconUrls = getFaviconUrls(site.url);
+  
   const handleFaviconError = () => {
-    setFaviconError(true);
+    // 尝试下一个favicon URL
+    if (currentFaviconIndex < faviconUrls.length - 1) {
+      setCurrentFaviconIndex(prev => prev + 1);
+    } else {
+      setFaviconError(true);
+    }
+  };
+  
+  const getCurrentFaviconUrl = () => {
+    return faviconUrls[currentFaviconIndex] || null;
   };
 
   return (
@@ -44,9 +65,9 @@ export function SiteCard({ site }: SiteCardProps) {
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            {!faviconError ? (
+            {!faviconError && getCurrentFaviconUrl() ? (
               <img 
-                src={getFaviconUrl(site.url) || `https://www.google.com/s2/favicons?sz=64&domain_url=${site.url}`}
+                src={getCurrentFaviconUrl()!}
                 alt={site.name}
                 className="w-8 h-8 rounded"
                 onError={handleFaviconError}

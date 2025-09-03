@@ -58,7 +58,7 @@ func main() {
 	}
 
 	// 读取JSON文件
-	jsonFile := "../../public/sites.json"
+	jsonFile := "sites.json"
 	if len(os.Args) > 1 {
 		jsonFile = os.Args[1]
 	}

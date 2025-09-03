@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "name": "渗透报告生成器",
+    "description": "基于CSCEC8B-PT渗透测试报告模板",
+    "url": "http://8.153.171.98:8080/",
+    "category": "tools",
+    "tags": ["效率", "网络安全"],
+    "rating": 5
+  },
+  {
+    "id": "2",
+    "name": "日报生成器",
+    "description": "基于运维中心计划管理多维表格",
+    "url": "http://8.153.171.98:8080/daily",
+    "category": "tools",
+    "tags": ["效率"],
+    "rating": 5
+  },
+  {
+    "id": "3",
+    "name": "青藤云安全",
+    "description": "无",
+    "url": "https://10.8.81.51/next/#/login",
+    "category": "security",
+    "tags": ["网络安全设备"],
+    "rating": 5
+  },
+  {
+    "id": "4",
+    "name": "互联网资产攻击面管理平台",
+    "description": "FOFA借测设备",
+    "url": "https://foradar.baimaohui.net/workbench",
+    "category": "security",
+    "tags": ["网络安全设备"],
+    "rating": 5
+  }
+]
